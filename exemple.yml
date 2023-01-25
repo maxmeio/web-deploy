@@ -1,0 +1,23 @@
+on: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
+name: Deploy
+jobs:
+  web-deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Pegando ultimas atualizações
+      uses: actions/checkout@v3
+    
+    - name: 📂 Sincronizando arquivos
+      uses: SamKirkland/web-deploy@v1
+      with:
+        target-server: ip_ou_dominio
+        remote-user: username
+        private-ssh-key: ${{ secrets.SSH_KEY }}
+        destination-path: ~/path/
+        rsync-options: -auv --compress --links --human-readable --progress --delete-after --exclude=/public/storage --exclude=/public/storage/* --exclude=.env --exclude=.env* --exclude=/public/*.ini --exclude=/public/.well-known --exclude=/public/.well-known/* --exclude=/public/uploads --exclude=/public/uploads/* --exclude=/public/userfiles --exclude=/public/userfiles/* --exclude=/public/userfiles/ --exclude=/storage  --exclude=/storage/* --exclude=/vendor --exclude=/vendor/* --exclude=.git* --exclude=.git/ --exclude=README.md --exclude=readme.md --exclude=.gitignore
