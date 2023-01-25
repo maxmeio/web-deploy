@@ -11,23 +11,30 @@ Automate deploying websites and more with this GitHub action. **It's free!**
 ### Usage Example
 Place the following in `Your_Project/.github/workflows/main.yml`
 ```yml
-on: push
-name: Publish Website
+on: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
+name: Deploy
 jobs:
   web-deploy:
-    name: 🚀 Deploy Website Every Commit
+    name: 🚀 Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get Latest Code
+    - name: 🚚 Pegando ultimas atualizações
       uses: actions/checkout@v3
     
-    - name: 📂 Sync Files
+    - name: 📂 Sincronizando arquivos
       uses: SamKirkland/web-deploy@v1
       with:
-        target-server: example.com
+        target-server: ip_ou_dominio
         remote-user: username
         private-ssh-key: ${{ secrets.SSH_KEY }}
-        destination-path: ~/destinationFolder/
+        destination-path: ~/path/
+        rsync-options: -auv --compress --links --human-readable --progress --delete-after --exclude=/public/storage --exclude=/public/storage/* --exclude=.env --exclude=.env* --exclude=/public/*.ini --exclude=/public/.well-known --exclude=/public/.well-known/* --exclude=/public/uploads --exclude=/public/uploads/* --exclude=/public/userfiles --exclude=/public/userfiles/* --exclude=/public/userfiles/ --exclude=/storage  --exclude=/storage/* --exclude=/vendor --exclude=/vendor/* --exclude=.git* --exclude=.git/ --exclude=README.md --exclude=readme.md --exclude=.gitignore
+
 ```
 
 ---
